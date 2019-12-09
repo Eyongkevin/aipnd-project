@@ -193,7 +193,7 @@ To test my command-line application, I ran the prediction on the same three test
 This was an interesting project with a lot of challenges, which even made it more awesome. I had the following challenges:
 
 ### To be able to adapt the app so that it can be trained on multiple pretrained models. 
-Due to the diversity in the model structures, some models like `alaxnet` and `vgg` have the `classifier` property but other models like `resnet18` have the `fc` property. Also, for those models with `classifier` property, a few had a `dropout` as their first parameter followed by the linear convolution which contains the actual input layer(`in_features`) So it was difficult at first to handle these differences, but I wrote a function that could handle it:
+Due to the diversity in the model structures, some models like `alaxnet` and `vgg` have the `classifier` property but other models like `resnet18` have the `fc` property. Also, for those models with `classifier` property, a few had a `dropout` as their first parameter followed by the linear convolution which contains the actual input layer(`in_features`). An example of such model is `alexnet`. But a model like `vgg16` doesn't have dropout as it first layer. So it was difficult at first to handle these differences, but I wrote a function that could handle it:
 
 ```
 def get_classifier_input_layer(model):
