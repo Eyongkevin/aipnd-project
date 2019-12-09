@@ -135,7 +135,7 @@ The above command will run the network on the default settings. We can see all a
 ```
     parser.add_argument('--data_dir', default='./flowers', type=str, help="data directory")
     parser.add_argument('--save_dir', default='./', type=str, help="directory to save checkpoints")
-    parser.add_argument('--arch', default='alexnet', help='DNN models to use like: alexnet, vgg13')
+    parser.add_argument('--arch', default='alexnet', help='DNN models to use like: alexnet, vgg19, resnet101')
     parser.add_argument('--hidden_layer', default=512, type=int, help='number of neurons in hidden layer')
     parser.add_argument('--output_layer', default=102, type=int, help='number of output layers')
     parser.add_argument('--learning_rate', default=0.001, type=float, help='learning rate')
@@ -145,6 +145,8 @@ The above command will run the network on the default settings. We can see all a
     parser.add_argument('--print_every', default=10, type=int, help='Set number of steps after every print')
     
 ```
+>This training allow users to chose only among the following three models (`alexnet`, `vgg19` and `resnet101`). If any other model is chosen apart from these, an exception will be thrown.
+
 To chose a different setting for the parameters, for example, the command :
 
 `python train.py --learning_rate 0.02 --drop_out 0.5 --gpu true`
@@ -193,6 +195,8 @@ To test my command-line application, I ran the prediction on the same three test
 This was an interesting project with a lot of challenges, which even made it more awesome. I had the following challenges:
 
 ### To be able to adapt the app so that it can be trained on multiple pretrained models. 
+Of cause the rubric says we should allow the user to chose from at least two model. My current code permits that. However, I will love to share some ideas if in case you will like to make it to accept a large number of pretrained models.
+
 Due to the diversity in the model structures, some models like `alaxnet` and `vgg` have the `classifier` property but other models like `resnet18` have the `fc` property. Also, for those models with `classifier` property, a few had a `dropout` as their first parameter followed by the linear convolution which contains the actual input layer(`in_features`). An example of such model is `alexnet`. But a model like `vgg16` doesn't have dropout as it first layer. So it was difficult at first to handle these differences, but I wrote a function that could handle it:
 
 ```
