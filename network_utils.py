@@ -7,21 +7,27 @@ import helper_utils
 
 def build_network(arch, hidden_layer, output_layer, drop_out):
     # Build network from pre-trained model.
-    try:
-        model = getattr(models, arch)(pretrained=True)
-    except AttributeError as e:
-        print("Error!: The parameter --arch is not valid for: {} \n".format(arch))
-        print("Using alexnet by default ")
-        model = models.alexnet(pretrained = True)
+    # Allow the user to load at least one more model architecture
+    if arch == 'alexnet':
+        model = models.alexnet(pretrained=True)
+        classifier_input_size = model.classifier[1].in_features
+    elif arch == 'vgg19':
+        model = models.vgg16(pretrained=True)
+        classifier_input_size = model.classifier[0].in_features
+    elif arch == 'resnet101':
+        model = models.resnet101(pretrained=True)
+        classifier_input_size = model.fc.in_features
+    else:
+        raise RuntimeError("invalid model: Please chose among `alexnet`, `vgg19` and `resnet101`")
 
-    # Freeze parameters so we don't backprop through them
+   # Freeze parameters so we don't backprop through them
     for param in model.parameters():
         param.requires_grad = False
 
-    input_layer = get_classifier_input_layer(model)
+    #input_layer = get_classifier_input_layer(model)
    
     classifier = nn.Sequential(OrderedDict([
-                            ('fc1', nn.Linear(input_layer, hidden_layer)),
+                            ('fc1', nn.Linear(classifier_input_size, hidden_layer)),
                             ('relu1', nn.ReLU()),
                             ('dropout1', nn.Dropout(p=drop_out)),
                             ('fc2', nn.Linear(hidden_layer, output_layer)),
@@ -29,7 +35,7 @@ def build_network(arch, hidden_layer, output_layer, drop_out):
                             ]))
         
     set_classifier(model, classifier)
-    return model, input_layer
+    return model, classifier_input_size
 
 
 def get_loss_func():

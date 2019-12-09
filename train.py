@@ -10,7 +10,7 @@ def get_args():
     parser = argparse.ArgumentParser(description="Training a model for flower classification")
     parser.add_argument('--data_dir', default='./flowers', type=str, help="data directory")
     parser.add_argument('--save_dir', default='./', type=str, help="directory to save checkpoints")
-    parser.add_argument('--arch', default='alexnet', help='DNN models to use like: alexnet, vgg13')
+    parser.add_argument('--arch', default='alexnet', help='DNN models to use like: alexnet, vgg19, resnet101')
     parser.add_argument('--hidden_layer', default=512, type=int, help='number of neurons in hidden layer')
     parser.add_argument('--output_layer', default=102, type=int, help='number of output layers')
     parser.add_argument('--learning_rate', default=0.001, type=float, help='learning rate')
